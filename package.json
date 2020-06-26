@@ -1,0 +1,19 @@
+{
+  "name": "productivityappmern",
+  "version": "1.0.0",
+  "description": "ProductivityWebApp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NicChoo96/ProductivityAppMERN.git"
+  },
+  "author": "NicholasChoo96",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NicChoo96/ProductivityAppMERN/issues"
+  },
+  "homepage": "https://github.com/NicChoo96/ProductivityAppMERN#readme"
+}
