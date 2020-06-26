@@ -1,7 +1,8 @@
 import React from 'react';
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './App.css';
 
+/*
 function App() {
   return (
     <div className="App">
@@ -19,6 +20,22 @@ function App() {
           Learn React
         </a>
       </header>
+    </div>
+  );
+}*/
+
+function Welcome(props){
+  return(
+    <div> 
+      <h1>{props.name}</h1>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div className="App">
+      <Welcome name="Welcome to Learning new React!" />
     </div>
   );
 }
