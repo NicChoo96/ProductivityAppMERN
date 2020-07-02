@@ -4,6 +4,7 @@ import TaskList from './components/TaskList'
 import Clock from './components/Clock'
 //import logo from './logo.svg';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 /*
 function App() {
@@ -50,7 +51,7 @@ function App() {
   //setInterval(tick, 1000);
   return (
     <div className="App">
-      <Welcome name="Welcome to Learning new React!" />
+      <Welcome name="Nic's Task List" />
       <TaskList />
       {/*<Clock />*/}
     </div>

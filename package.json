@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/NicChoo96/ProductivityAppMERN/issues"
   },
-  "homepage": "https://github.com/NicChoo96/ProductivityAppMERN#readme"
+  "homepage": "https://github.com/NicChoo96/ProductivityAppMERN#readme",
+  "dependencies": {
+    "bootstrap": "^4.5.0",
+    "react-bootstrap": "^1.0.1"
+  }
 }
