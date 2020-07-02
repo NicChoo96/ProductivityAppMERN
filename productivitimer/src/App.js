@@ -1,4 +1,7 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+import TaskList from './components/TaskList'
+import Clock from './components/Clock'
 //import logo from './logo.svg';
 import './App.css';
 
@@ -23,6 +26,17 @@ function App() {
     </div>
   );
 }*/
+/*
+function tick() {
+  const element = (
+    <div>
+      <h1>Hello, world!</h1>
+      <h2>It is {new Date().toLocaleTimeString()}.</h2>
+    </div>
+  );
+  ReactDOM.render(element, document.getElementById('root'));
+}*/
+
 
 function Welcome(props){
   return(
@@ -33,9 +47,12 @@ function Welcome(props){
 }
 
 function App() {
+  //setInterval(tick, 1000);
   return (
     <div className="App">
       <Welcome name="Welcome to Learning new React!" />
+      <TaskList />
+      {/*<Clock />*/}
     </div>
   );
 }
