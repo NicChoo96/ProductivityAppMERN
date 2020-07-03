@@ -51,7 +51,7 @@ function App() {
   //setInterval(tick, 1000);
   return (
     <div className="App">
-      <Welcome name="Welcome to Learning new React!" />
+      <Welcome name="Nic's Task List" />
       <TaskList />
       {/*<Clock />*/}
     </div>

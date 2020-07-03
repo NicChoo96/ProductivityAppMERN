@@ -8,7 +8,7 @@ function elaspedTime(currentTime, taskTime){
 
 function Task(props){
 	return(
-		<ol key={props.count}>{props.name} ({props.count}): {props.timerCountDown.toLocaleTimeString()} Time Elapsed:{elaspedTime(props.currentTime, props.timerCountDown)}</ol>
+		<ol key={props.count}>{props.name}: {props.timerCountDown.toLocaleTimeString()} Time Elapsed:{elaspedTime(props.currentTime, props.timerCountDown)}</ol>
 	);
 }
 
@@ -18,7 +18,8 @@ class TaskList extends Component {
 		this.state = 
 			{
 				currentTime: new Date(),
-				tasks: []
+				tasks: [],
+				nameInput: ""
 			};
 }	
 
@@ -40,12 +41,15 @@ class TaskList extends Component {
 
 	AddTask(props){
 		const taskListArr = this.state.tasks;
-		taskListArr.push({name: "New Task", timerCountDown: new Date(), count:1});
-		console.log(this.state.tasks);
+		taskListArr.push({name: this.state.nameInput, timerCountDown: new Date(), count:1});
 		this.setState(
-			{currentTime: new Date()}
+			{currentTime: new Date(), nameInput:""}
 		)
 	}
+
+	handleChange(event) {
+    	this.setState({nameInput: event.target.value});
+  	}
 
 	render(){
 		const taskObj = this.state.tasks;
@@ -58,19 +62,18 @@ class TaskList extends Component {
 			);
 		});
 
+
 		return (
 			<div>
 				<h1>{this.state.currentTime.toLocaleTimeString()}</h1>
 				<Form>
-					<Form.Group controlId="formBasicEmail">
+					<Form.Group>
 						<Form.Label>Task Name:</Form.Label>
-						<Form.Control type="text" placeholder="Enter New Task" />
+						<Form.Control istype="text" placeholder="Enter New Task" value={this.state.nameInput} onChange={this.handleChange.bind(this)} />
 					</Form.Group>
-					<Button variant="primary" onClick={()=>this.AddTask()}>Add Task</Button>
+					<Button variants="primary" onClick={()=>this.AddTask()}>Add Task</Button>
 				</Form>
-				<ListGroup>
 				{list}
-				</ListGroup>
 			</div>
 		);
 		
