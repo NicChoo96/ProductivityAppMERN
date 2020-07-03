@@ -4,6 +4,7 @@ import TaskList from './components/TaskList'
 import Clock from './components/Clock'
 //import logo from './logo.svg';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 /*
 function App() {

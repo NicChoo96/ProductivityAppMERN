@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
+import { Button, Form, ListGroup } from 'react-bootstrap';
 
 function elaspedTime(currentTime, taskTime){
-	var diffTime = Math.abs(taskTime - currentTime);
-	return Math.round(diffTime/1000);
+	var diffTime = Math.round(Math.abs(taskTime - currentTime)/1000);
+	return new Date(diffTime * 1000).toISOString().substr(11, 8);
 }
 
 function Task(props){
 	return(
-		<ol key={props.count}>{props.name} ({props.count}): {props.timerCountDown.toLocaleTimeString()} Time Elapsed:{elaspedTime(props.currentTime, props.timerCountDown)} sec</ol>
+		<ol key={props.count}>{props.name} ({props.count}): {props.timerCountDown.toLocaleTimeString()} Time Elapsed:{elaspedTime(props.currentTime, props.timerCountDown)}</ol>
 	);
 }
 
@@ -51,17 +52,25 @@ class TaskList extends Component {
 		//const names = ["This Task", "That Task"]
 		const list = taskObj.map((element, index)=>{
 			return(
-				<div>
+				<ListGroup.Item>
 				<Task name={element.name} timerCountDown={element.timerCountDown} count={index+1} currentTime={this.state.currentTime} />
-				</div>
+				</ListGroup.Item>
 			);
 		});
 
 		return (
 			<div>
 				<h1>{this.state.currentTime.toLocaleTimeString()}</h1>
-				<button onClick={()=>this.AddTask()}>Add Task</button>
+				<Form>
+					<Form.Group controlId="formBasicEmail">
+						<Form.Label>Task Name:</Form.Label>
+						<Form.Control type="text" placeholder="Enter New Task" />
+					</Form.Group>
+					<Button variant="primary" onClick={()=>this.AddTask()}>Add Task</Button>
+				</Form>
+				<ListGroup>
 				{list}
+				</ListGroup>
 			</div>
 		);
 		
