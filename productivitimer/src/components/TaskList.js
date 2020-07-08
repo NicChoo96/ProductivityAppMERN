@@ -58,6 +58,7 @@ class TaskList extends Component {
 
 	AddTask(props){
 		const taskListArr = this.state.tasks;
+
 		taskListArr.push({name: this.state.nameInput, timerCountDown: new Date(), count:1, dateSetter: this.state.dateSetter});
 		this.setState(
 			{nameInput:""}
