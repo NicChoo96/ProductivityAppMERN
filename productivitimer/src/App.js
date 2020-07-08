@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TaskList from './components/TaskList'
-import Clock from './components/Clock'
+import { CookiesProvider } from 'react-cookie';
 //import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -51,9 +51,8 @@ function App() {
   //setInterval(tick, 1000);
   return (
     <div className="App">
-      <Welcome name="Welcome to Learning new React!" />
+      <Welcome name="Nic's Task List" />
       <TaskList />
-      {/*<Clock />*/}
     </div>
   );
 }

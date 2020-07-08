@@ -18,6 +18,8 @@
   "homepage": "https://github.com/NicChoo96/ProductivityAppMERN#readme",
   "dependencies": {
     "bootstrap": "^4.5.0",
-    "react-bootstrap": "^1.0.1"
+    "react-bootstrap": "^1.0.1",
+    "react-cookie": "^4.0.3",
+    "react-datetime-picker": "^3.0.2"
   }
 }
