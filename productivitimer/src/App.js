@@ -1,7 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import TaskList from './components/TaskList'
-import { CookiesProvider } from 'react-cookie';
+//import ReactDOM from 'react-dom';
+import TaskList from './components/TaskList';
+//import { CookiesProvider } from 'react-cookie';
 //import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
