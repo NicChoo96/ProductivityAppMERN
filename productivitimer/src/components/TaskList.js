@@ -20,14 +20,18 @@ function remainingTime(currentTime, deadlineTime){
 
 function Task(props){
 	const [open, setOpen] = useState(false);
+	let alertStyling = "";
+
+	if(Math.round((props.dateSetter - props.currentTime)/1000) <= 0)
+		alertStyling = "red";
+	else
+		alertStyling = "white";
 
 	return(
-		<div>
-			<ol onMouseEnter={() => setOpen(!open)}
-          onMouseLeave={() => setOpen(!open)} key=
-			{props.count}>{props.name}:
-			Remaining Time: {remainingTime(props.currentTime, props.dateSetter)}
-			</ol>
+
+		<ListGroup.Item key={props.count} style={{background:alertStyling}} onMouseEnter={() => setOpen(!open)}
+          onMouseLeave={() => setOpen(!open)}>
+          {props.name}:Remaining Time: {remainingTime(props.currentTime, props.dateSetter)}
 			<Collapse in={open}>
 				<div>
 					<p>Time Created: {props.timerCountDown.toLocaleTimeString()}</p>
@@ -35,7 +39,7 @@ function Task(props){
 
 				</div>
 			</Collapse>
-		</div>
+		</ListGroup.Item>
 	);
 }
 
@@ -112,12 +116,10 @@ class TaskList extends Component {
 		//const names = ["This Task", "That Task"]
 		const list = taskObj.map((element, index)=>{
 			return(
-				<>
-				<ListGroup.Item key={index} className="taskItem">
-				<Task name={element.name} timerCountDown={element.timerCountDown} count={index+1} currentTime={this.state.currentTime} dateSetter={element.dateSetter} />
-				</ListGroup.Item>
-				<Button variants="primary" onClick={()=>this.RemoveTask({taskIndex:index})}>X</Button>
-				</>
+				<div className="taskItem">
+					<Task name={element.name} timerCountDown={element.timerCountDown} count={index+1} currentTime={this.state.currentTime} dateSetter={element.dateSetter} />
+					<Button variants="primary" onClick={()=>this.RemoveTask({taskIndex:index})}>Archive</Button>
+				</div>
 			);
 		});
 

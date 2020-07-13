@@ -37,6 +37,6 @@
   }
 }
 
-.className{
-  display: inline;
+.taskItem{
+  display: contents;
 }
