@@ -1,6 +1,5 @@
-import React, { Component } from 'react'
-//import { Button, Form, ListGroup, Dropdown, Collapse } from 'react-bootstrap';
-import { Button, Form, ListGroup } from 'react-bootstrap';
+import React, { Component, useState } from 'react'
+import { Button, Form, ListGroup, Collapse } from 'react-bootstrap';
 import DateTimePicker from 'react-datetime-picker';
 //import { withCookies, Cookies } from 'react-cookie';
 import DateCountDownPicker from './DateCountDownPicker';
@@ -20,12 +19,23 @@ function remainingTime(currentTime, deadlineTime){
 }
 
 function Task(props){
+	const [open, setOpen] = useState(false);
+
 	return(
-		<ol key=
-		{props.count}>{props.name}: {props.timerCountDown.toLocaleTimeString()} 
-		Time Elapsed:{elaspedTime(props.currentTime, props.timerCountDown)} 
-		Remaining Time: {remainingTime(props.currentTime, props.dateSetter)}
-		</ol>
+		<div>
+			<ol onMouseEnter={() => setOpen(!open)}
+          onMouseLeave={() => setOpen(!open)} key=
+			{props.count}>{props.name}:
+			Remaining Time: {remainingTime(props.currentTime, props.dateSetter)}
+			</ol>
+			<Collapse in={open}>
+				<div>
+					<p>Time Created: {props.timerCountDown.toLocaleTimeString()}</p>
+					<p>Time Elapsed: {elaspedTime(props.currentTime, props.timerCountDown)}</p>
+
+				</div>
+			</Collapse>
+		</div>
 	);
 }
 
@@ -60,7 +70,7 @@ class TaskList extends Component {
 
 	AddTask(props){
 		if(this.state.nameInput != ""){
-			
+
 			const taskListArr = this.state.tasks;
 
 			console.log(this.state.min);
@@ -102,10 +112,12 @@ class TaskList extends Component {
 		//const names = ["This Task", "That Task"]
 		const list = taskObj.map((element, index)=>{
 			return(
-				<ListGroup.Item key={index}>
+				<>
+				<ListGroup.Item key={index} className="taskItem">
 				<Task name={element.name} timerCountDown={element.timerCountDown} count={index+1} currentTime={this.state.currentTime} dateSetter={element.dateSetter} />
-				<Button variants="primary" onClick={()=>this.RemoveTask({taskIndex:index})}>X</Button>
 				</ListGroup.Item>
+				<Button variants="primary" onClick={()=>this.RemoveTask({taskIndex:index})}>X</Button>
+				</>
 			);
 		});
 
