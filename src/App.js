@@ -1,6 +1,8 @@
 import React from 'react';
 //import ReactDOM from 'react-dom';
 import TaskList from './components/TaskList';
+import Clock from './components/Clock';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 //import { CookiesProvider } from 'react-cookie';
 //import logo from './logo.svg';
 import './App.css';
@@ -38,22 +40,18 @@ function tick() {
   ReactDOM.render(element, document.getElementById('root'));
 }*/
 
-
-function Welcome(props){
-  return(
-    <div> 
-      <h1>{props.name}</h1>
-    </div>
-  );
-}
-
 function App() {
   //setInterval(tick, 1000);
   return (
-    <div className="App">
-      <Welcome name="Nic's Task List" />
-      <TaskList />
-    </div>
+  	<Router>
+	    <div className="App">
+	    	<h1>Nic's Task List</h1>
+			<Link to="/" className="navbar-brand">Home</Link>
+			<Link to="/Clock" className="navbar-brand">Clock App</Link>
+	    	<Route path="/" exact component={TaskList} />
+	    	<Route path="/clock" component={Clock} />
+	    </div>
+    </Router>
   );
 }
 

@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 
 function Task(props){
 	return(
@@ -31,13 +32,13 @@ class Clock extends Component{
 	render(){
 		return(
 			<div>
-			<div>
-				<h1>Hello</h1>
-				<h2>It is {this.state.date.toLocaleTimeString()}.</h2>
-			</div>
-			<div>
-					<Task name={this.state.name} timerCountDown={this.state.date} count={this.state.count} /> 
-			</div>
+				<div>
+					<h1>Hello</h1>
+					<h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+				</div>
+				<div>
+						<Task name={this.state.name} timerCountDown={this.state.date} count={this.state.count} /> 
+				</div>
 			</div>
 		);
 	}
