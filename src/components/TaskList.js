@@ -23,21 +23,20 @@ function Task(props){
 	const [open, setOpen] = useState(false);
 	let alertStyling = "";
 
-	if(Math.round((props.dateSetter - props.currentTime)/1000) <= 0)
+	if(Math.round((props.end_date - props.currentTime)/1000) <= 0)
 		alertStyling = "red";
 	else
 		alertStyling = "white";
 
 	return(
 
-		<ListGroup.Item key={props.count} style={{background:alertStyling}} onMouseEnter={() => setOpen(!open)}
+		<ListGroup.Item key={props.key} style={{background:alertStyling}} onMouseEnter={() => setOpen(!open)}
           onMouseLeave={() => setOpen(!open)}>
-          {props.name}:Remaining Time: {remainingTime(props.currentTime, props.dateSetter)}
+          {props.name}:Remaining Time: {remainingTime(props.currentTime, props.end_date)}
 			<Collapse in={open}>
 				<div>
-					<p>Time Created: {props.timerCountDown.toLocaleTimeString()}</p>
-					<p>Time Elapsed: {elaspedTime(props.currentTime, props.timerCountDown)}</p>
-
+					<p>Time Created: {props.created_date.toLocaleTimeString()}</p>
+					<p>Time Elapsed: {elaspedTime(props.currentTime, props.created_date)}</p>
 				</div>
 			</Collapse>
 		</ListGroup.Item>
@@ -61,6 +60,9 @@ class TaskList extends Component {
 		this.timerID = setInterval(
 			()=> this.tick(), 1000
 		);
+		fetch('http://localhost:4000/tasklist/')
+			.then(response => response.json())
+			.then(data => this.setState({tasks: data}));
 	}
 
 	componentWillUnmount(){
@@ -80,11 +82,28 @@ class TaskList extends Component {
 
 			console.log(this.state.min);
 
-			const newCountDownDate = new Date((new Date()).getTime() + this.state.min*60000);
+			const endDate = new Date((new Date()).getTime() + this.state.min*60000);
 
-			taskListArr.push({name: this.state.nameInput, timerCountDown: new Date(), count:1, dateSetter: newCountDownDate});
+			const newTask = {
+				"task_name": this.state.nameInput, "task_created_date": new Date(), "task_end_date": endDate
+			};
+
+			taskListArr.push({task_name: this.state.nameInput, task_created_date: new Date(), count:1, task_end_date: endDate});
+
+			fetch('http://localhost:4000/tasklist/add', {
+				method: 'post',
+				headers: {
+			      'Content-Type': 'application/json'
+			    },
+				body: JSON.stringify(newTask)
+			})
+				.then(response => console.log(response.json()));
+
 			this.setState(
-				{nameInput:""}
+				{
+					nameInput:"",
+					tasks: taskListArr
+				}
 			)
 		}
 	}
@@ -94,6 +113,9 @@ class TaskList extends Component {
 		this.setState({
 			tasks: this.state.tasks
 		});
+		fetch('http://localhost:4000/tasklist/archive/'+props.key, {
+				method: 'post'
+			}).then(response => console.log(response.json()));
 	}
 
 	handleChange(event) {
@@ -115,13 +137,14 @@ class TaskList extends Component {
 	render(){
 		const taskObj = this.state.tasks;
 		//const names = ["This Task", "That Task"]
-		const list = taskObj.map((element, index)=>{
-			return(
-				<div className="taskItem">
-					<Task name={element.name} timerCountDown={element.timerCountDown} count={index+1} currentTime={this.state.currentTime} dateSetter={element.dateSetter} />
-					<Button variants="primary" onClick={()=>this.RemoveTask({taskIndex:index})}>Archive</Button>
-				</div>
-			);
+		const list = taskObj.map((task, index)=>{
+			if(!task.archiveStatus)
+				return(
+					<div className="taskItem">
+						<Task key={task._id} name={task.task_name} created_date={new Date(task.task_created_date)} count={index+1} currentTime={this.state.currentTime} end_date={new Date(task.task_end_date)} />
+						<Button variants="primary" onClick={()=>this.RemoveTask({taskIndex:index, key:task._id})}>Archive</Button>
+					</div>
+				);
 		});
 
 
