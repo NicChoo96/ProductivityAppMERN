@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react'
-import { Button, Form, ListGroup, Collapse } from 'react-bootstrap';
+import { Button, Form, ListGroup, Collapse, Toast } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import DateTimePicker from 'react-datetime-picker';
 //import { withCookies, Cookies } from 'react-cookie';
@@ -19,6 +19,13 @@ function remainingTime(currentTime, deadlineTime){
 	return new Date(diffTime * 1000).toISOString().substr(11, 8);
 }
 
+function TestFetchApiData(){
+	const link = 'https://api.data.gov.sg/v1/environment/air-temperature'
+	fetch(link)
+		.then(response => response.json())
+		.then(data => console.log(data));
+}
+
 function Task(props){
 	const [open, setOpen] = useState(false);
 	let alertStyling = "";
@@ -29,17 +36,22 @@ function Task(props){
 		alertStyling = "white";
 
 	return(
-
-		<ListGroup.Item key={props.key} style={{background:alertStyling}} onMouseEnter={() => setOpen(!open)}
+		<Toast>
+		<Toast.Header key={props.key} style={{background:alertStyling}} onMouseEnter={() => setOpen(!open)}
           onMouseLeave={() => setOpen(!open)}>
-          {props.name}:Remaining Time: {remainingTime(props.currentTime, props.end_date)}
+          {props.name}
+          <small>{remainingTime(props.currentTime, props.end_date)}</small>
+          </Toast.Header>
+      		<Toast.Body>
 			<Collapse in={open}>
 				<div>
 					<p>Time Created: {props.created_date.toLocaleTimeString()}</p>
 					<p>Time Elapsed: {elaspedTime(props.currentTime, props.created_date)}</p>
 				</div>
 			</Collapse>
-		</ListGroup.Item>
+			</Toast.Body>
+			<Button	 variants="primary" onClick={()=>this.RemoveTask(props.taskIndex, props.key)}>Archive</Button>
+		</Toast>
 	);
 }
 
@@ -55,6 +67,8 @@ class TaskList extends Component {
 				min: 5
 			};
 	}
+
+	
 
 	componentDidMount(){
 		this.timerID = setInterval(
@@ -109,13 +123,13 @@ class TaskList extends Component {
 	}
 
 	RemoveTask(props){
+		fetch('http://localhost:4000/tasklist/archive/'+props.key, {
+				method: 'post'
+			}).then(response => console.log("Task Archive Succesfully!"));
 		this.state.tasks.splice(props.taskIndex, 1);
 		this.setState({
 			tasks: this.state.tasks
 		});
-		fetch('http://localhost:4000/tasklist/archive/'+props.key, {
-				method: 'post'
-			}).then(response => console.log(response.json()));
 	}
 
 	handleChange(event) {
@@ -141,8 +155,7 @@ class TaskList extends Component {
 			if(!task.archiveStatus)
 				return(
 					<div className="taskItem">
-						<Task key={task._id} name={task.task_name} created_date={new Date(task.task_created_date)} count={index+1} currentTime={this.state.currentTime} end_date={new Date(task.task_end_date)} />
-						<Button variants="primary" onClick={()=>this.RemoveTask({taskIndex:index, key:task._id})}>Archive</Button>
+						<Task key={task._id} taskIndex={index} name={task.task_name} created_date={new Date(task.task_created_date)} count={index+1} currentTime={this.state.currentTime} end_date={new Date(task.task_end_date)} />
 					</div>
 				);
 		});
@@ -167,9 +180,7 @@ class TaskList extends Component {
 				<DateCountDownPicker getMinute = {this.getMinute} />
 
 				<Button variants="primary" onClick={()=>this.AddTask()}>Add Task</Button>
-				<ListGroup>
-					{list}
-				</ListGroup>
+				{list}
 			</div>
 		);
 		
