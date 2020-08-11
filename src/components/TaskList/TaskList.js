@@ -2,8 +2,10 @@ import React, { Component, useState } from 'react'
 import { Button, Form, ListGroup, Collapse, Toast } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import DateTimePicker from 'react-datetime-picker';
+import './TaskList.css';
 //import { withCookies, Cookies } from 'react-cookie';
-import DateCountDownPicker from './DateCountDownPicker';
+import DateCountDownPicker from '../DateCountDownPicker/DateCountDownPicker';
+import Switch from '@material-ui/core/Switch';
 
 function elaspedTime(currentTime, taskTime){
 	var diffTime = Math.round(Math.abs(taskTime - currentTime)/1000);
@@ -36,21 +38,21 @@ function Task(props){
 		alertStyling = "white";
 
 	return(
-		<Toast>
-		<Toast.Header key={props.key} style={{background:alertStyling}} onMouseEnter={() => setOpen(!open)}
-          onMouseLeave={() => setOpen(!open)}>
-          {props.name}
-          <small>{remainingTime(props.currentTime, props.end_date)}</small>
-          </Toast.Header>
+		<Toast className="task-toast-wrapper">
+			<Toast.Header key={props.key} style={{background:alertStyling}} onMouseEnter={() => setOpen(!open)}
+	        onMouseLeave={() => setOpen(!open)}>
+		        <p class="mr-auto task-id" >{props.name}</p>
+		        <small>{remainingTime(props.currentTime, props.end_date)}</small>
+        	</Toast.Header>
       		<Toast.Body>
 			<Collapse in={open}>
-				<div>
+				<div className="task-toast-desc-wrapper">
 					<p>Time Created: {props.created_date.toLocaleTimeString()}</p>
 					<p>Time Elapsed: {elaspedTime(props.currentTime, props.created_date)}</p>
 				</div>
 			</Collapse>
+			<Button	variants="primary" onClick={()=>this.RemoveTask(props.taskIndex, props.key)}>Archive</Button>
 			</Toast.Body>
-			<Button	 variants="primary" onClick={()=>this.RemoveTask(props.taskIndex, props.key)}>Archive</Button>
 		</Toast>
 	);
 }
@@ -64,7 +66,8 @@ class TaskList extends Component {
 				tasks: [],
 				nameInput: "",
 				dateSetter: new Date(),
-				min: 5
+				min: 5,
+				isDatePicker: false
 			};
 	}
 
@@ -148,18 +151,13 @@ class TaskList extends Component {
 		}
 	);
 
+	toggleSwitch = isDatePicker => this.setState({
+		isDatePicker
+	}, ()=>console.log(this.state.isDatePicker));
+
 	render(){
 		const taskObj = this.state.tasks;
 		//const names = ["This Task", "That Task"]
-		const list = taskObj.map((task, index)=>{
-			if(!task.archiveStatus)
-				return(
-					<div className="taskItem">
-						<Task key={task._id} taskIndex={index} name={task.task_name} created_date={new Date(task.task_created_date)} count={index+1} currentTime={this.state.currentTime} end_date={new Date(task.task_end_date)} />
-					</div>
-				);
-		});
-
 
 		return (
 			<div>
@@ -170,17 +168,25 @@ class TaskList extends Component {
 						<Form.Control width="20px" istype="text" placeholder="Enter New Task" value={this.state.nameInput} onChange={this.handleChange.bind(this)} />
 					</Form.Group>
 
-					<Form.Group>
-						<h5>Time Deadline</h5>
+					<div className="time-pick-wrapper">
+						<h5>Time Deadline <span><Switch size="small" checked={this.state.isDatePicker} onChange={this.toggleSwitch} /></span></h5>
 						<DateTimePicker onChange={this.onChange} value={this.state.dateSetter} />
-					</Form.Group>
-
+						<DateCountDownPicker style="color:white;" getMinute = {this.getMinute} />
+					</div>
 				</Form>
-
-				<DateCountDownPicker getMinute = {this.getMinute} />
-
 				<Button variants="primary" onClick={()=>this.AddTask()}>Add Task</Button>
-				{list}
+				<div class="container task-wrapper col-md-12">
+					{
+					taskObj.map((task, index)=>{
+						if(!task.archiveStatus)
+							return(
+								<Task key={task._id} taskIndex={index} name={task.task_name} 
+								created_date={new Date(task.task_created_date)} count={index+1} 
+								currentTime={this.state.currentTime} end_date={new Date(task.task_end_date)} />
+							);
+					})
+					}
+				</div>
 			</div>
 		);
 		

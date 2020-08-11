@@ -1,0 +1,50 @@
+.time-pick-wrapper {
+	margin: 10px 0 10px 0;
+}
+
+.task-wrapper {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+
+	justify-content: center;
+}
+
+.task-toast-wrapper {
+	margin: 10px;
+
+	height: fit-content;
+	max-width: 5ch;
+
+	opacity: 0.5 !important;
+}
+
+.task-toast-wrapper:hover {
+	opacity: 1 !important;
+}
+
+.task-toast-desc-wrapper {
+	color: black;
+}
+.task-id {
+	display: inline-block;
+	font-family: RobotoMono, monospace;
+	padding-right: 10px;
+	padding-top: 1em;
+
+	text-overflow: clip;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.react-datetime-picker__inputGroup__input{
+	color: white;
+}
+
+@media (max-width: 600px) {
+	.task-toast-wrapper {
+		opacity: 1 !important;
+		width: 100%;
+		max-width: 100%;
+	}
+}

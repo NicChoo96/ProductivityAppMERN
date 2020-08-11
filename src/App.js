@@ -1,12 +1,14 @@
 import React from 'react';
 //import ReactDOM from 'react-dom';
-import TaskList from './components/TaskList';
-import Clock from './components/Clock';
+import TaskList from './components/TaskList/TaskList';
+import Clock from './components/Clock/Clock';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 //import { CookiesProvider } from 'react-cookie';
 //import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+//Wall paper from: https://wallpapercave.com/w/wp2533041
 
 /*
 function App() {
